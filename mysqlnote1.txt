@@ -10,7 +10,7 @@ mysql> CREATE TABLE employee(id int(10),name char(20),phone int(12));  #创建�
 mysql> INSERT INTO (id,name,phone) VALUES (3,'Tom',2234)  #向表中插入数据
 shiyanlou:~/ cd Desktop  #进入桌面
 shiyanlou/Desktop:~/ git clone https://github.com/shiyanlou/SQL3  #使用git下载文件
-
+source /home/shiyanlou/Desktop/SQL3/MySQL-03-01.sql  #加载文件数据
 
 数据类型 	大小(字节) 	用途 	格式
 INT 	        4 	整数 	
