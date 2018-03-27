@@ -131,7 +131,46 @@ mysql> SELECT column_name(s) FROM table_name1
     -> UNION
     -> SELECT column_name(s) FROM table_name2
 注释：默认地，UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL
-	
+
+
+#修改和删除
+#删除数据库
+mysql> DROP DATABASE employee;
+
+#重命名表
+mysql> RENAME TABLE 原名 TO 新名字;
+mysql> ALTER TABLE 原名 RENAME 新名;
+mysql> ALTER TABLE 原名 RENAME TO 新名;	
+
+#删除表
+mysql> DROP TABLE 表名字;
+
+#新增一列
+mysql> ALTER TABLE 表名字 ADD COLUMN 列名字 数据类型 约束;
+mysql> ALTER TABLE 表名字 ADD 列名字 数据类型 约束;
+mysql> 新增加的列，被默认放置在这张表的最右边。如果要把增加的列插入在指定位置，则需要在语句的最后使用AFTER关键词(“AFTER 列1” 表示新增的列被放置在 “列1” 的后面)
+mysql> ALTER TABLE employee ADD test INT(10) DEFAULT 11 FIRST;
+
+#删除一列
+mysql> ALTER TABLE 表名字 DROP COLUMN 列名字;
+mysql> ALTER TABLE 表名字 DROP 列名字;
+
+#重命名一列
+mysql> ALTER TABLE 表名字 CHANGE 原列名 新列名 数据类型 约束;
+注意：这条重命名语句后面的 “数据类型” 不能省略，否则重命名失败；修改数据类型可能会导致数据丢失，所以要慎重使用
+
+#改变数据类型
+mysql> ALTER TABLE 表名字 MODIFY 列名字 新数据类型;
+修改数据类型可能会导致数据丢失，所以要慎重使用
+
+#修改表中值
+mysql> UPDATE 表名字 SET 列1=值1,列2=值2 WHERE 条件;
+
+#删除一行记录
+mysql> DELETE FROM 表名字 WHERE 条件;
+删除表中的一行数据，也必须加上WHERE条件，否则整列的数据都会被删除
+
+
 
 
 
