@@ -1,31 +1,93 @@
+#创建数据库及表
+#创建数据库
 hiyanlou:~/ sudo service mysql start  #打开MySQL
 shiyanlou:~/ mysql -u root #使用root用户登录，实验楼环境的密码为空，直接回车就可以登录
 mysql> show databases; #查看数据库
-mysql> CREATE DATABASE mysql_shiyan;  #创建数据库mysql_shiyan
-#出于严谨，而且便于区分保留字和变量名，我们将保留字大写，把变量和数据小写
+mysql> CREATE DATABASE mysql_shiyan;  #创建数据库mysql_shiyan #便于区分保留字和变量名，我们将保留字大写，把变量和数据小写
 mysql> use information_schema;  #use <数据库名> 连接数据库
-mysql> show tables; #查看表
-mysql> CREATE TABLE employee(id int(10),name char(20),phone int(12));  #创建表employee
-mysql> INSERT INTO (id,name,phone) VALUES (3,'Tom',2234)  #向表中插入数据
-mysql> quit/exit; #退出mysql
 
+#加载数据库文件
 shiyanlou:~/ cd Desktop  #进入桌面
 shiyanlou/Desktop:~/ git clone https://github.com/shiyanlou/SQL3  #使用git下载文件
-mysql> source /home/shiyanlou/Desktop/SQL3/MySQL-03-01.sql  #加载文件数据
+mysql> source /home/shiyanlou/Desktop/SQL3/MySQL-03-01.sql  #加载文件数据（直接连接该数据库）
+
+#创建表
+mysql> show tables; #查看表
+mysql> CREATE TABLE employee(id int(10),name char(20),phone int(12));  #创建表employee
+mysql> INSERT INTO (id,name,phone) VALUES (3,'Tom',2234)； #向表中插入数据
+mysql> quit/exit; #退出mysql
+
+
+#约束
+#创建主键（创建新表）
+mysql> CREATE TABLE employee(id INT(10) PRIMARY KEY,name CHAR(20)); #单列主键
+mysql> CREATE TABLE employee(id INT(10),name CHAR(20),PRIMARY KEY (id)); #单列主键
+mysql> CREATE TABLE employee(id INT(10),name CHAR(20),CONSTRAINT PRIMARY KEY (id,name)); #多列主键
+#创建主键（已有表新增）
+mysql> ALTER TABLE employee
+    -> ADD PRIMARY KEY (id);#单列主键
+mysql> ALTER TABLE employee
+    -> ADD CONSTRAINT pkname PRIMARY KEY (id,name);	#多列主键
+#撤销主键
+mysql> ALTER TABLE employee
+    -> DROP PRIMARY KEY;
+
+#创建外键（创建新表）
+mysql> CREATE TABLE orders(id_o INT(10) PRIMARY KEY,ordernum INT(10) NOT NULL,id int(10),FOREIGN KEY (id) REFERENCES employee(id));#单列外键
+mysql> CREATE TABLE orders(id_o INT(10) PRIMARY KEY,ordernum INT(10) NOT NULL,id int(10),CONSTRAINT fkname FOREIGN KEY (id) REFERENCES employee(id));#单列/多列外键
+#创建外键（已有表新增）
+mysql> ALTER TABLE employee
+    -> ADD OREIGN KEY (id) REFERENCES employee(id));#单列主键
+mysql> ALTER TABLE employee
+    -> ADD CONSTRAINT fkname FOREIGN KEY (id) REFERENCES employee(id));#单列/多列主键
+#撤销主键
+mysql> ALTER TABLE employee
+    -> DROP FOREIGN KEY fkname;
+
+#默认值约束
+#创建默认值（创建新表）
+mysql> CREATE TABLE orders(id_o INT(10) PRIMARY KEY,ordernum INT(10) NOT NULL,id int(10) DEFAULT '10');
+DEFAULT '10'/'Tom'/DATE()
+#创建默认键（已有表新增）
+mysql> ALTER TABLE employee
+    -> ALTER name SET DEFAULT 'Tom';
+#撤销默认值
+mysql> ALTER TABLE employee
+    -> ATTER employee DROP DEFAULT;
+
+#唯一值约束
+...UNIQUE (id);...CONSTRAINT uc_PersonID UNIQUE (Id_P,LastName)
+#创建唯一值（已有表新增）
+mysql> ALTER TABLE employee
+    -> ADD UNIQUE (id);   #单列唯一
+mysql> ALTER TABLE employee
+    -> ADD CONSTRAINT unname UNIQUE (id,name);  #多列唯一
+#撤销唯一值
+mysql> ALTER TABLE employee
+    -> DROP INDEX unname;	
+
+#非空约束
+NOT NULL
+
+#CHECK 约束
+...CHECK (id>10); CONSTRAINT chk_Person CHECK (Id_P>0 AND City='Sandnes');
+ADD CHECK (id>10); ADD CONSTRAINT chk_Person CHECK (Id_P>0 AND City='Sandnes')	
+DROP CHECK chk_Person;
 
 
 
 
+	
 数据类型 	大小(字节) 	用途 	格式
-INT 	        4 	整数 	
-FLOAT 	        4 	单精度浮点数 	
-DOUBLE 	        8 	双精度浮点数 	
+INT 	        4 	    整数 	
+FLOAT 	        4 	    单精度浮点数 	
+DOUBLE 	        8 	    双精度浮点数 	
 			
-ENUM 		        单选,比如性别 	ENUM('a','b','c')
-SET 		        多选 	SET('1','2','3')
-DATE 	        3 	日期 	YYYY-MM-DD
-TIME 	        3 	时间点或持续时间 	HH:MM:SS
-YEAR 	        1 	年份值 	YYYY
+ENUM 		            单选,比如性别 	ENUM('a','b','c')
+SET 		            多选 	SET('1','2','3')
+DATE 	        3 	    日期 	YYYY-MM-DD
+TIME 	        3 	    时间点或持续时间 	HH:MM:SS
+YEAR 	        1 	    年份值 	YYYY
 			
 CHAR 	       0~255 	定长字符串 	
 VARCHAR 	   0~255 	变长字符串 	
