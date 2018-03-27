@@ -12,7 +12,6 @@ mysql> quit/exit; #退出mysql
 shiyanlou:~/ cd Desktop  #进入桌面
 shiyanlou/Desktop:~/ git clone https://github.com/shiyanlou/SQL3  #使用git下载文件
 mysql> source /home/shiyanlou/Desktop/SQL3/MySQL-03-01.sql  #加载文件数据
-aa
 
 
 
